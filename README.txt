@@ -1,73 +1,39 @@
 # Sudoku-271
 
 Sudoku in C++
-Aparna Gollakota, Eva Martinuzzi, Sarah Black, Davor Maric
 
-One Paragraph of project description goes here
+This project creates a Sudoku board that users can solve.  The users are timed and can choose their difficulty level, either easy, medium or hard.  They are also able to choose a mode, either Insaenz or Basic B.  Insaenz mode only alllows the user two guesses per box, while Basic B mode gives you unlimited guesses.  Hints are also available to users, but the number of total hints allowed is determined by the level the user chooses.  Upon completing the puzzle, the user is told their time and whether or not they are correct.
 
 Getting Started
+===============
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+Copy all the code into your prefered IDE, either Xcode or Visual Studio
 
 Prerequisites
+==============
 
-What things you need to install the software and how to install them
+Have the latest version of Xcode or Visual Studio installed on your machine
 
-Give examples
-Installing
-
-A step by step series of examples that tell you have to get a development env running
-
-Say what the step will be
-
-Give the example
-And repeat
-
-until finished
-End with an example of getting some data out of the system or using it for a little demo
-
-Running the tests
-
-Explain how to run the automated tests for this system
-
-Break down into end to end tests
-
-Explain what these tests test and why
-
-Give an example
-And coding style tests
-
-Explain what these tests test and why
-
-Give an example
-Deployment
-
-Add additional notes about how to deploy this on a live system
-
-Built With
-
-Dropwizard - The web framework used
-Maven - Dependency Management
-ROME - Used to generate RSS Feeds
-Contributing
-
-Please read CONTRIBUTING.md for details on our code of conduct, and the process for submitting pull requests to us.
-
-Versioning
-
-We use SemVer for versioning. For the versions available, see the tags on this repository.
+Running the Code
+================
+Once copied into the correct folders in your IDE, you should be able to successfully build and run the code.
+There are no tests to run.
+The Sudoku game should appear in the terminal or within the IDE itsself, and you should be able to play along.
 
 Authors
+=======
 
-Billie Thompson - Initial work - PurpleBooth
-See also the list of contributors who participated in this project.
+Aparna Gollakota - Developer
+Eva Martinuzzi - Developer, created presentation
+Sarah Black - Developer, core code
+Siv Yeramati - Developer
+Davor Maric
 
 License
+=======
 
-This project is licensed under the MIT License - see the LICENSE.md file for details
+LUC 2016
 
 Acknowledgments
-
-Hat tip to anyone who's code was used
-Inspiration
-etc
+===============
+S/O to coffee
