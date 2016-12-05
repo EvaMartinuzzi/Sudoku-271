@@ -1,7 +1,8 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include<conio.h>
 #include<time.h>
+#include<string>
+#include<cstring>
 
 //*just kinda left these out so I could use them throughout the code, not sure if most efficient though*//
 int a[9][9], r[60][2];
@@ -12,7 +13,6 @@ void main()
 	//*Honestly not sure why, but I had to put 'void' in these fns when calling, but works :) *//
 	void display(void), generate(void);
 	int solve(), check_c(), checkrow(), checkcolumn(), check(), isfixed();
-	int i, j, error;
 	char c;
 
 	printf("\t\t\t   SUDOKU \n\n\t\t\t");
@@ -65,7 +65,7 @@ void display()
 			printf("\t\t");
 			//*makes top and bottom pretty bit*//
 			for (k = 0; k < 45; k++){
-				_cprintf("*");
+				printf("*");
 			}
 			if (i == 9){
 				goto end;
@@ -87,17 +87,17 @@ void display()
 				if (a[i][j] == 0)
 				{
 				
-					_cprintf("|");
+					printf("|");
 					for (k = 0; k<4; k++)
 						printf(" ");
 				}
 				else
 				{
 			
-					_cprintf("| ", a[i][j]);
+					printf("| ", a[i][j]);
 					fixed = isfixed(icount, i, j);
 
-					_cprintf("%d  ", a[i][j]);
+					printf("%d  ", a[i][j]);
 				}
 			}
 			else
@@ -109,11 +109,11 @@ void display()
 				{
 					fixed = isfixed(icount, i, j);
 
-					_cprintf("  %d  ", a[i][j]);
+					printf("  %d  ", a[i][j]);
 				}
 			}
 		}
-		_cprintf("\b|");
+		printf("\b|");
 	}end:
 	//*when finished*//
 	printf("\n\t\tPress Enter key to exit.");
@@ -179,7 +179,7 @@ int check(int m, int n)
 //*this was a bitch, man*//
 int solve()
 {
-	int i, m = 0, n = 0, number, c, fixed;
+	int m = 0, n = 0, number, c, fixed;
 
 A:
 
