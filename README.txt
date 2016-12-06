@@ -24,7 +24,7 @@ Authors
 =======
 
 Aparna Gollakota - Developer
-Eva Martinuzzi - Senrior Debugger, created presentation
+Eva Martinuzzi - Senior Debugger, created presentation
 Sarah Black - Senior Core Code Developer
 Siv Yeramati - Developer
 Davor Maric - ¯\_(ツ)_/¯
