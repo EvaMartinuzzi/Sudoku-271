@@ -15,6 +15,8 @@ char c;
 
 int main()
 {
+	for (int i = 0; i < 9; i++)
+		a[i] = new int[9];
 	//*Honestly not sure why, but I had to put 'void' in these fns when calling, but works :) *//
 	void display(void), generate();
 	int check_c(int m, int n);
@@ -59,6 +61,9 @@ menu:
 		cout<<("Stop that. Press '1' or '2'. There is no third option. Please stop.");
 		system("pause");
 	}
+	for (int i = 0; i < row; i++)
+		delete[] a[i];
+	delete[] a;
 }
 
 
