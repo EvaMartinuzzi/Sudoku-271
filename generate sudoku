@@ -23,14 +23,15 @@ int mode();
 
 int main()
 {
+menu:
 	for (int i = 0; i < 9; i++)
 		a[i] = new int[9];
 	//*Honestly not sure why, but I had to put 'void' in these fns when calling, but works :) *//
 
-menu:
+
 	cout<<"\t\t\t   SUDOKU \n\n\t\t\t"<<endl;
 	cout<<"\n\n\n\n\t\tEnter '1' and then press 'Enter' to create your Sudoku, or enter '2' and then press 'Enter' for the rules\n\n\tEnter: "<<endl;
-	cout<<"%c"<<&c<<endl;
+	scanf_s("%c",&c);
 
 	//*if user enters '1' then 'enter'*//
 	switch (c) {
@@ -45,7 +46,8 @@ menu:
 		row = row - 1;
 		col = col - 1;
 		userinput(row, col, m);
-
+		system("pause");
+		break;
 		//*If user enters '2', 'enter' for rules*//
 	case '2':
 		cout<<"\n\n\t\t\tHOW TO PLAY\n"<<endl;
@@ -57,10 +59,12 @@ menu:
 		system("pause");
 		getchar();
 		goto menu;
+		break;
 		//*Figured we'd need a default*//
 	default:
 		cout<<("Stop that. Press '1' or '2'. There is no third option. Please stop.");
 		system("pause");
+		break;
 	}
 	for (int i = 0; i < row; i++)
 		delete[] a[i];
@@ -89,29 +93,29 @@ void display()
 {
 	int i, j, k, fixed;
 
-	for (i = 0; i<10; i++) {
-		if (i % 3 == 0) {
-			if (i != 0) {
-				cout<<("\n");
+	for (i = 0; i<10; i++){
+		if (i % 3 == 0){
+			if (i != 0){
+				printf("\n");
 			}
-			cout<<("\t\t");
+			printf("\t\t");
 			//*makes top and bottom pretty bit*//
-			for (k = 0; k < 45; k++) {
-				cout<<("*");
+			for (k = 0; k < 45; k++){
+				printf("*");
 			}
-			if (i == 9) {
+			if (i == 9){
 				goto end;
 			}
 		}
 		//*makes the vertical lines... this I'm not sure about*//
 		if (i % 3 != 0)
 		{
-			cout<<("\n\t\t");
-			cout<<("|\t\t\b|\t\t\b\b|\t\t\t\b\b\b\b|");
-			cout<<("\n\t\t");
+			printf("\n\t\t");
+			printf("|\t\t\b|\t\t\b\b|\t\t\t\b\b\b\b|");
+			printf("\n\t\t");
 		}
 		else
-			cout<<("\n\t\t");
+			printf("\n\t\t");
 		for (j = 0; j<9; j++)
 		{
 			if (j % 3 == 0)
@@ -119,35 +123,36 @@ void display()
 				if (a[i][j] == 0)
 				{
 
-					cout<<("|");
+					printf("|");
 					for (k = 0; k<4; k++)
-						cout<<(" ");
+						printf(" ");
 				}
 				else
 				{
-					cout << "| " << a[i][j] << endl;
+
+					printf("| ", a[i][j]);
 					fixed = isfixed(icount, i, j);
 
-					cout<<("%d  ", a[i][j]);
+					printf("%d  ", a[i][j]);
 				}
 			}
 			else
 			{
 				if (a[i][j] == 0)
 					for (k = 0; k<5; k++)
-						cout<<(" ");
+						printf(" ");
 				else
 				{
 					fixed = isfixed(icount, i, j);
 
-					cout<<("  %d  ", a[i][j]);
+					printf("  %d  ", a[i][j]);
 				}
 			}
 		}
-		cout<<("\b|");
+		printf("\b|");
 	}end:
 	//*when finished*//
-	cout<<("\n\t\tPress Enter key to exit.");
+	printf("\n\t\tPress Enter key to exit.");
 }
 
 
@@ -366,7 +371,7 @@ generate:
 	cout<<("\n\n\n\n\t\tEnter your difficulty");
 	cout<<("\n\n\n\t\t1.'I literally don't know what a puzzle is'\n\n\t\t2.Easy\n\n\t\t3.Medium\n\n\t\t4.Hard\n\n\n\t\tENTER: ");
 	//*takes the user's input*//
-	cout<<"%c"<<&choice << endl;
+	scanf_s("%c", &choice);
 
 	switch (choice)
 	{
@@ -451,7 +456,7 @@ generate:
 	display();
 	getchar();
 	cout<<"\n\n\n\tEnter 's' to solve the puzzle or 'm' to generate another puzzle and 'h' to get a hint: "<<endl;
-	cout<<"%c"<<&choice<<endl;
+	scanf_s("%c", &choice);
 
 	//*if they wish to solve, upper or lower case*//
 	if (choice == 's' || choice == 'S')
@@ -465,7 +470,7 @@ generate:
 		getchar();
 	}
 	getchar();
-
+	system("pause");
 	//*otherwise make a new puzzle*//
 	if (choice == 'm' || choice == 'M')
 		goto generate;
