@@ -22,7 +22,7 @@ int main()
     int check(int m,int n);
     int isfixed(int icount, int m, int n);
     int userinput(int a[0][0],int m);
-    int mode(int n);
+    int mode();
 menu:
     printf("\t\t\t   SUDOKU \n\n\t\t\t");
     printf("\n\n\n\n\t\tEnter '1' and then press 'Enter' to create your Sudoku, or enter '2' and then press 'Enter' for the rules\n\n\tEnter: ");
@@ -33,7 +33,7 @@ menu:
         case '1':
             getchar();
             generate();
-            h=mode(n);//n here is arbitrary we needto figure out what to send it
+            h=mode();
             cout<<"Enter value into which row?"<<endl;
             cin>>row;
             cout<<"Enter value into which column?"<<endl;
@@ -325,7 +325,6 @@ B:
 int mode()
 {
     char ui_mode, level;
-    cout << "Welcome to Sudoku!" << endl;
     cout << "Choose a mode: B for Basic B or I for Insaenz" << endl;
     cin >>ui_mode;
     
@@ -334,19 +333,8 @@ int mode()
         cout << "You did not enter a correct mode!  Choose a mode: B for Basic B or I for Insaenz" << endl;
         cin >> ui_mode;
     }
-    
-    ui_mode = tolower(ui_mode);
-    
-    cout << "Choose diffuclty: E for easy, M for medium, H for hard" << endl;
-    cin >> level;
-    level = tolower(level);
-    if (level != 'b' && ui_mode != 'i') {
-        cout << "You did not enter a correct level!  Choose diffuclty: E for easy, M for medium, H for hard" << endl;
-        cin >> level;
-    }
-    level= tolower(level);
-    h=10000;
-    //create_sudoku(char mode, char level);
+    if (ui_mode=='b') h=10000;
+    else if (ui_mode=='i') h=2;
     return h;
 }
 
