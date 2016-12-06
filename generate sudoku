@@ -39,13 +39,6 @@ menu:
 		getchar();
 		generate();
 		h = mode();
-		cout << "What row: ";
-		cin >> row;
-		cout << "What column: ";
-		cin >> col;
-		row = row - 1;
-		col = col - 1;
-		userinput(row, col, m);
 		system("pause");
 		break;
 		//*If user enters '2', 'enter' for rules*//
@@ -82,9 +75,18 @@ int isfixed(int count, int m, int n)
 }
 
 void userinput(int row, int col, int m){
+	cout << "Enter the row you would like: " << endl;
+	cin >> row;
+	cout << "Enter the column you would like: " << endl;
+	cin >> col;
 	cout << "What value would you like to enter?" << endl;
 	cin >> m;
-	a[row][col] = m;
+	if (a[row][col] = m){
+		cout << "Noice." << endl;
+	}
+	else{
+		cout << "That's super wrong. Try again!" << endl;
+	}
 }
 
 
@@ -455,7 +457,7 @@ generate:
 	icount = x;
 	display();
 	getchar();
-	cout<<"\n\n\n\tEnter 's' to solve the puzzle or 'm' to generate another puzzle and 'h' to get a hint: "<<endl;
+	cout<<"\n\n\n\tEnter 's' to solve the puzzle or 'm' to generate another puzzle, 'u' to input values, and 'h' to get a hint: "<<endl;
 	scanf_s("%c", &choice);
 
 	//*if they wish to solve, upper or lower case*//
@@ -471,6 +473,14 @@ generate:
 	}
 	getchar();
 	system("pause");
+	if (choice == 'u' || choice == 'U'){
+		for (m = 0; m < 9; m++) {
+			for (n = 0; n < 9; n++) {
+				a[m][n] = b[m][n];
+			}
+		}
+		userinput(row, col, m);
+	}
 	//*otherwise make a new puzzle*//
 	if (choice == 'm' || choice == 'M')
 		goto generate;
