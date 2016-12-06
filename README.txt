@@ -24,10 +24,10 @@ Authors
 =======
 
 Aparna Gollakota - Developer
-Eva Martinuzzi - Developer, created presentation
-Sarah Black - Developer, core code
+Eva Martinuzzi - Senrior Debugger, created presentation
+Sarah Black - Senior Core Code Developer
 Siv Yeramati - Developer
-Davor Maric
+Davor Maric - ¯\_(ツ)_/¯
 
 License
 =======
