@@ -12,20 +12,21 @@ int **a = new int *[9];
 int r[60][2];
 int row, col, icount, m, u, h, x, n;
 char c;
+void display(void), generate();
+int check_c(int m, int n);
+int checkrow(int m, int n);
+int checkcolumn(int m, int n);
+int check(int m, int n);
+int isfixed(int icount, int m, int n);
+void userinput(int row, int col, int m);
+int mode();
 
 int main()
 {
 	for (int i = 0; i < 9; i++)
 		a[i] = new int[9];
 	//*Honestly not sure why, but I had to put 'void' in these fns when calling, but works :) *//
-	void display(void), generate();
-	int check_c(int m, int n);
-	int checkrow(int m, int n);
-	int checkcolumn(int m, int n);
-	int check(int m, int n);
-	int isfixed(int icount, int m, int n);
-	int userinput(int a, int m);
-	int mode();
+
 menu:
 	cout<<"\t\t\t   SUDOKU \n\n\t\t\t"<<endl;
 	cout<<"\n\n\n\n\t\tEnter '1' and then press 'Enter' to create your Sudoku, or enter '2' and then press 'Enter' for the rules\n\n\tEnter: "<<endl;
@@ -37,13 +38,13 @@ menu:
 		getchar();
 		generate();
 		h = mode();
-		cout << "Enter value into which row?" << endl;
+		cout << "What row: ";
 		cin >> row;
-		cout << "Enter value into which column?" << endl;
+		cout << "What column: ";
 		cin >> col;
-		cout << "What value would you like to enter?" << endl;
-		cin >> m;
-		userinput(a[row][col], m);
+		row = row - 1;
+		col = col - 1;
+		userinput(row, col, m);
 
 		//*If user enters '2', 'enter' for rules*//
 	case '2':
@@ -76,14 +77,10 @@ int isfixed(int count, int m, int n)
 	return(0);
 }
 
-void userinput(int a[row][col], int m)
-{
-	cout << "Enter value into which row?" << endl;
-	cin >> row;
-	cout << "Enter value into which column?" << endl;
-	cin >> col;
+void userinput(int row, int col, int m){
 	cout << "What value would you like to enter?" << endl;
 	cin >> m;
+	a[row][col] = m;
 }
 
 
