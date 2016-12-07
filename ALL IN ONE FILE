@@ -7,10 +7,10 @@
 
 using namespace std;
 
-//*just kinda left these out so I could use them throughout the code, not sure if most efficient though*//
 int **a = new int *[9];
 int r[60][2];
 int row, col, icount, m, u, h, x, n;
+int z;
 char c;
 void display(void), generate();
 int check_c(int m, int n);
@@ -18,7 +18,7 @@ int checkrow(int m, int n);
 int checkcolumn(int m, int n);
 int check(int m, int n);
 int isfixed(int icount, int m, int n);
-void userinput(int row, int col, int m);
+int userinput();
 int mode();
 
 int main()
@@ -64,17 +64,29 @@ int isfixed(int count, int m, int n)
 	return(0);
 }
 
-void userinput(int row, int col, int m){
-	int i, j;
+int userinput(){
+	row = row + 1;
+	col = col + 1;
+strt:
+	int r = 0; m = 0;
 	cout << "Enter the row you would like: " << endl;
-	cin >> row;
+	scanf_s("%i", &row);
+	
 	cout << "Enter the column you would like: " << endl;
-	cin >> col;
+	scanf_s("%i", &col);
+	
 	cout << "What value would you like to enter?" << endl;
-	cin >> m;
-
-	a[row][col];
-
+	scanf_s("%i", &z);
+	
+	//if (row >1 && row <10 && col>1 && col<10 && m >1 && m <10){
+		if (a[row][col] = z){
+			printf("Good work!");
+			return a[row][col];
+		}
+		else{
+			printf("Try Again!");
+			goto strt;
+		}
 }
 
 
@@ -462,12 +474,7 @@ generate:
 	getchar();
 	system("pause");
 	if (choice == 'u' || choice == 'U'){
-		for (m = 0; m < 9; m++) {
-			for (n = 0; n < 9; n++) {
-				a[m][n] = b[m][n];
-			}
-		}
-		userinput(row, col, m);
+		userinput();
 	}
 	//*otherwise make a new puzzle*//
 	if (choice == 'm' || choice == 'M')
