@@ -375,17 +375,26 @@ int main(int argv, char **argc) {
 	Board sudoku;
 	char vorh;
 
-
-	int guess, h;
+	int h = hints();
+	int guess;
 	cout << "Wanna make a guess? Yes, press '1'" << endl;
 	cin >> guess;
 	switch (guess){
-		case'1':
+		case 1:
 			cout << "'V' to enter value or 'H' to ask for a hint" << endl;
 			cin >> vorh;
 			vorh=tolower(vorh);
-			if (vorh == 'h') h=hints();
-			else
+			if (vorh == 'h') {
+				cout << "You have " << h << " hints left" << endl;
+				if (h == 0) {
+					cout << "No more hints!" << endl;
+					break;
+				}
+				else {
+					cout << "heres your hint" << endl;
+					h--;
+				}
+			}
 	}
 	system("pause");
 	return 0;
