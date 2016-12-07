@@ -149,9 +149,9 @@ bool Board::delete_randomtiles(int difficulty)
 	}
 	for (int i = 0; i < nDelete; i++) {
 		srand(time(NULL));
-		rx= rand() % 100 + 1;
+		rx= rand() % 81 + 1;
 		srand(time(NULL));
-		ry= rand() % 100 + 1;
+		ry= rand() % 81 + 1;
 		starting_board[rx][ry].setCurrentValue(0);
 		play_board[rx][ry].setCurrentValue(0);
 	}
