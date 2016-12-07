@@ -26,38 +26,27 @@ int main()
 menu:
 	for (int i = 0; i < 9; i++)
 		a[i] = new int[9];
-	//*Honestly not sure why, but I had to put 'void' in these fns when calling, but works :) *//
+	cout << "\t\t\t   SUDOKU \n\n\t\t\t" << endl;
+	cout << "Select Your Option (enter number):\n     1. Start\n     2. Rules" << endl;
+	//scanf_s("%c", &c);
 
-
-	cout<<"\t\t\t   SUDOKU \n\n\t\t\t"<<endl;
-	cout<<"\n\n\n\n\t\tEnter '1' and then press 'Enter' to create your Sudoku, or enter '2' and then press 'Enter' for the rules\n\n\tEnter: "<<endl;
-	scanf_s("%c",&c);
-
-	//*if user enters '1' then 'enter'*//
-	switch (c) {
-	case '1':
-		getchar();
-		generate();
-		h = mode();
-		system("pause");
-		break;
-		//*If user enters '2', 'enter' for rules*//
-	case '2':
-		cout<<"\n\n\t\t\tHOW TO PLAY\n"<<endl;
-		cout<<"\n\nSudoku is a game with a grid of 81 squares, divided into \n nine blocks with nine squares each." << endl;
-		cout<<"\n\nEach of the nine squares must contain numbers 1 - 9" << endl;
-		cout<<"\n\nEach number may only appear once in a column, row, or square." << endl;
-		cout<<"\n\nGood luck!" << endl;
-		cout<<"\n\n\n\n\t\t\t  Enter any key to continue" << endl;
-		system("pause");
-		getchar();
+	cin >> c;
+	if (c == '1') {
+		cout << "hello" << endl;
+		generate(a, r, x, icount, row, col);
+		h = mode(h);
+	}
+	else if (c == '2') {
+		cout << "\n\n\t\t\tHOW TO PLAY\n" << endl;
+		cout << "\n\nSudoku is a game with a grid of 81 squares, divided into \n nine blocks with nine squares each." << endl;
+		cout << "\n\nEach of the nine squares must contain numbers 1 - 9" << endl;
+		cout << "\n\nEach number may only appear once in a column, row, or square." << endl;
+		cout << "\n\nGood luck!" << endl;
+		cout << "\n\n\n\n\t\t\t  Enter any key to continue" << endl;
 		goto menu;
-		break;
-		//*Figured we'd need a default*//
-	default:
-		cout<<("Stop that. Press '1' or '2'. There is no third option. Please stop.");
-		system("pause");
-		break;
+	}
+	else {
+		cout << ("Stop that. Press '1' or '2'. There is no third option. Please stop.");
 	}
 	for (int i = 0; i < row; i++)
 		delete[] a[i];
