@@ -290,14 +290,14 @@ void loadMenu() {
 
 	switch (selection) {
 	case 1:
-		cout << "hello world" << endl;
+		cout << "Generating board..." << endl;
 		break;
 	case 2:
 		displayRules();
 		loadMenu();
 		break;
 	default:
-		cout << ("Stop that. Press '1' or '2'. There is no third option. Please stop.") << endl;
+		cout << ("1 and 2 are the only valid options.") << endl;
 		break;
 	}
 }
@@ -391,7 +391,7 @@ int main(int argv, char **argc) {
 					break;
 				}
 				else {
-					cout << "heres your hint" << endl;
+					cout << "Heres your hint: " << endl;
 					h--;
 				}
 			}
