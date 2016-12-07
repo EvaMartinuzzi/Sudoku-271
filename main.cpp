@@ -20,7 +20,7 @@ int checkrow(int m, int n, int **a);
 int checkcolumn(int m, int n, int **a);
 int check(int m, int n);
 int isfixed(int icount, int m, int n);
-void userinput(int row, int col, int m);
+void userinput(int row, int col, int m, int **a);
 int mode(int h);
 
 int main()
@@ -64,19 +64,6 @@ int isfixed(int count, int m, int n)
 	return(0);
 }
 
-void userinput(int row, int col, int m) {
-	int i, j;
-	cout << "Enter the row you would like: " << endl;
-	cin >> row;
-	cout << "Enter the column you would like: " << endl;
-	cin >> col;
-	cout << "What value would you like to enter?" << endl;
-	cin >> m;
-
-	a[row][col];
-
-}
-
 
 //*Function that prints the Sudoku board*//
 void display()
@@ -101,7 +88,7 @@ void display()
 		if (i % 3 != 0)
 		{
 			printf("\n\t\t");
-			printf("|              |              |             |");
+			printf("|    |    |    |    |    |    |    |    |   |");
 			printf("\n\t\t");
 		}
 		else
@@ -414,10 +401,11 @@ generate:
 				a[m][n] = b[m][n];
 			}
 		}
-		userinput(row, col, m);
+		userinput(row, col, m, a);
 	}
 	//*otherwise make a new puzzle*//
 	if (choice == 'm' || choice == 'M')
-		goto generate;
+		getchar();
+		generate();
 	exit(0);
 }
