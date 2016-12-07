@@ -1,7 +1,7 @@
 #include<string>
 #include<cstring>
 #include<iostream>
-#include "main.h"
+
 
 using namespace std;
 
