@@ -33,8 +33,9 @@ menu:
 	cin >> c;
 	if (c == '1') {
 		cout << "hello" << endl;
-		generate(a, r, x, icount, row, col);
-		h = mode(h);
+		getchar();
+		generate();
+		h = mode();
 	}
 	else if (c == '2') {
 		cout << "\n\n\t\t\tHOW TO PLAY\n" << endl;
@@ -71,7 +72,7 @@ void userinput(int row, int col, int m){
 	cin >> col;
 	cout << "What value would you like to enter?" << endl;
 	cin >> m;
-	
+
 	a[row][col];
 
 }
@@ -357,8 +358,8 @@ generate:
 	}
 
 	//*Difficulty*//
-	cout<<("\n\n\n\n\t\tEnter your difficulty");
-	cout<<("\n\n\n\t\t1.'I literally don't know what a puzzle is'\n\n\t\t2.Easy\n\n\t\t3.Medium\n\n\t\t4.Hard\n\n\n\t\tENTER: ");
+	cout << ("\n\n\n\n\t\tEnter your difficulty");
+	cout << ("\n\n\n\t\t1.'I literally don't know what a puzzle is'\n\n\t\t2.Easy\n\n\t\t3.Medium\n\n\t\t4.Hard\n\n\n\t\tENTER: ");
 	//*takes the user's input*//
 	scanf_s("%c", &choice);
 
@@ -444,7 +445,7 @@ generate:
 	icount = x;
 	display();
 	getchar();
-	cout<<"\n\n\n\tEnter 's' to solve the puzzle or 'm' to generate another puzzle, 'u' to input values, and 'h' to get a hint: "<<endl;
+	cout << "\n\n\n\tEnter 's' to solve the puzzle or 'm' to generate another puzzle, 'u' to input values, and 'h' to get a hint: " << endl;
 	scanf_s("%c", &choice);
 
 	//*if they wish to solve, upper or lower case*//
