@@ -101,7 +101,7 @@ void display()
 		if (i % 3 != 0)
 		{
 			printf("\n\t\t");
-			printf("|\t\t\b\t\t\b\b   |\t\b\b\b\b\t\t\t    |");
+			printf("|              |              |             |");
 			printf("\n\t\t");
 		}
 		else
