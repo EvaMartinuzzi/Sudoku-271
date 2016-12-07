@@ -148,8 +148,8 @@ bool Board::delete_randomtiles(int difficulty)
         nDelete = 30;
     }
     for (int i = 0; i < nDelete; i++) {
-        rx = srand();
-        ry = srand();
+        rx = srand(time (NULL));
+        ry = srand(time (NULL));
         starting_board[rx][ry].setCurrentValue(0);
         play_board[rx][ry].setCurrentValue(0);
     }
