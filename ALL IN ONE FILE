@@ -377,25 +377,30 @@ int main(int argv, char **argc) {
 
 	int h = hints();
 	int guess;
-	cout << "Wanna make a guess? Yes, press '1'" << endl;
+	cout << "Wanna make a guess? Yes, press '1', '0' to exit" << endl;
 	cin >> guess;
-	switch (guess){
-		case 1:
-			cout << "'V' to enter value or 'H' to ask for a hint" << endl;
-			cin >> vorh;
-			vorh=tolower(vorh);
-			if (vorh == 'h') {
-				cout << "You have " << h << " hints left" << endl;
-				if (h == 0) {
-					cout << "No more hints!" << endl;
-					break;
+	while (guess!=0){
+		switch (guess) {
+			case 1:
+				cout << "'V' to enter value or 'H' to ask for a hint" << endl;
+				cin >> vorh;
+				vorh = tolower(vorh);
+				if (vorh == 'h') {
+					cout << "You have " << h << " hints left" << endl;
+					if (h == 0) {
+						cout << "No more hints!" << endl;
+					}
+					else {
+						cout << "Heres your hint: " << endl;
+						h--;
+					}
 				}
-				else {
-					cout << "Heres your hint: " << endl;
-					h--;
-				}
+				break;
 			}
-	}
+			cout << "Wanna make a guess? Yes, press '1', '0' to exit" << endl;
+			cin >> guess;
+		}
+
 	system("pause");
 	return 0;
 
