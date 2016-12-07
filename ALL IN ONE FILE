@@ -1,340 +1,361 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<time.h>
-#include<string>
-#include<cstring>
-#include<iostream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <string>
+#include <cstring>
+#include <iostream>
+//*#include <unistd.h>
+#include <list>
+#include <fstream>
 
 using namespace std;
 
-int **a = new int *[9];
-int r[60][2];
-int row, col, icount, m, u, h, x, n;
-int z;
-char c;
-void display(void), generate();
-int check_c(int m, int n);
-int checkrow(int m, int n);
-int checkcolumn(int m, int n);
-int check(int m, int n);
-int isfixed(int icount, int m, int n);
-int userinput();
-int mode();
+class Square {
 
-int main()
-{
-menu:
-	for (int i = 0; i < 9; i++)
-		a[i] = new int[9];
-	cout << "\t\t\t   SUDOKU \n\n\t\t\t" << endl;
-	cout << "Select Your Option (enter number):\n     1. Start\n     2. Rules" << endl;
-	//scanf_s("%c", &c);
+	list<int> available_values;
 
-	cin >> c;
-	if (c == '1') {
-		cout << "hello" << endl;
-		getchar();
-		generate();
-		h = mode();
+	int current_value;
+
+public:
+
+	Square();
+
+	void reset();
+
+	int getAvailableValue();
+
+	int getCurrentValue();
+	void setCurrentValue(int new_value);
+
+};
+
+int Square::getAvailableValue() {
+
+	if (available_values.empty()) {
+		return -1;
 	}
-	else if (c == '2') {
-		cout << "\n\n\t\t\tHOW TO PLAY\n" << endl;
-		cout << "\n\nSudoku is a game with a grid of 81 squares, divided into \n nine blocks with nine squares each." << endl;
-		cout << "\n\nEach of the nine squares must contain numbers 1 - 9" << endl;
-		cout << "\n\nEach number may only appear once in a column, row, or square." << endl;
-		cout << "\n\nGood luck!" << endl;
-		cout << "\n\n\n\n\t\t\t  Enter any key to continue" << endl;
-		goto menu;
+
+	int return_val = available_values.front();
+	available_values.pop_front();
+
+	return return_val;
+
+}
+
+int Square::getCurrentValue() {
+	return current_value;
+}
+
+void Square::setCurrentValue(int new_value) {
+	current_value = new_value;
+}
+
+void Square::reset() {
+	setCurrentValue(-1);
+
+	// intializing the available values list
+	for (int x = 0; x < 9; x++) {
+		available_values.push_front(x + 1);
+	}
+
+	for (int x = 0; x < 1000; x++) {
+		int rand_one = rand() % 3;
+		if (rand_one < (rand() % 6)) {
+			available_values.push_front(available_values.back());
+			available_values.pop_back();
+		}
+		else {
+			available_values.push_back(available_values.front());
+			available_values.pop_front();
+		}
+	}
+
+}
+
+
+
+Square::Square(void) {
+
+	reset();
+
+}
+
+class Board {
+
+	Square sudoku_board[9][9];
+	Square starting_board[9][9];
+	Square play_board[9][9];
+
+	void printBoard();
+	void edit();
+
+public:
+
+	Board();
+
+	int coordinates;
+	bool isFixedValue[81];
+	int values[81];
+	int generateBoard(int, int);
+	bool isInvalid(int, int);
+	bool makeStartingBoard();
+	bool delete_randomtiles(int difficulty);
+	bool inputTile(int, int, int);
+
+};
+
+bool Board::makeStartingBoard()
+{
+	for (int i = 0; i<9; i++) {
+		for (int j = 0; j<9; j++) {
+			starting_board[i][j].setCurrentValue(sudoku_board[i][j].getCurrentValue());
+			play_board[i][j].setCurrentValue(sudoku_board[i][j].getCurrentValue());
+		}
+
+	}
+	return true;
+}
+
+bool Board::inputTile(int x, int y, int n)
+{
+	if (x>0 && x<10 && y>0 && y<10 && n>0 && n<10)
+	{
+		if (starting_board[x][y].getCurrentValue() != 0) {
+			return false;
+		}
+		else {
+			play_board[x][y].setCurrentValue(n);
+			return true;
+		}
 	}
 	else {
-		cout << ("Stop that. Press '1' or '2'. There is no third option. Please stop.");
+		return false;
 	}
-	for (int i = 0; i < row; i++)
-		delete[] a[i];
-	delete[] a;
+
 }
 
-
-int isfixed(int count, int m, int n)
+bool Board::delete_randomtiles(int difficulty)
 {
-	int i;
-	for (i = 0; i<count; i++)
-		if (m == r[i][0] && n == r[i][1])
-			return(1);
-	return(0);
+	int nDelete;
+	int rx, ry;
+	if (difficulty == 1) {
+		nDelete = 10;
+	}
+	else if (difficulty == 2) {
+		nDelete = 20;
+	}
+	else if (difficulty == 3) {
+		nDelete = 30;
+	}
+	for (int i = 0; i < nDelete; i++) {
+		srand(time(NULL));
+		rx= rand() % 81 + 1;
+		srand(time(NULL));
+		ry= rand() % 81 + 1;
+		starting_board[rx][ry].setCurrentValue(0);
+		play_board[rx][ry].setCurrentValue(0);
+	}
+	return true;
 }
+bool Board::isInvalid(int current_x, int current_y) {
 
-int userinput(){
-	row = row + 1;
-	col = col + 1;
-strt:
-	int r = 0; m = 0;
-	cout << "Enter the row you would like: " << endl;
-	scanf_s("%i", &row);
-	
-	cout << "Enter the column you would like: " << endl;
-	scanf_s("%i", &col);
-	
-	cout << "What value would you like to enter?" << endl;
-	scanf_s("%i", &z);
-	
-	//if (row >1 && row <10 && col>1 && col<10 && m >1 && m <10){
-		if (a[row][col] = z){
-			printf("Good work!");
-			return a[row][col];
-		}
-		else{
-			printf("Try Again!");
-			goto strt;
-		}
-}
+	// verify the row is still valid
 
+	for (int x = 0; x < 9; x++) {
+		bool check_one = (x != current_x);
+		bool check_two = (sudoku_board[current_y][x].getCurrentValue() == sudoku_board[current_y][current_x].getCurrentValue());
 
-//*Function that prints the Sudoku board*//
-void display()
-{
-	int i, j, k, fixed;
-
-	for (i = 0; i<10; i++){
-		if (i % 3 == 0){
-			if (i != 0){
-				printf("\n");
-			}
-			printf("\t\t");
-			//*makes top and bottom pretty bit*//
-			for (k = 0; k < 45; k++){
-				printf("*");
-			}
-			if (i == 9){
-				goto end;
+		if (check_one) {
+			if (check_two) {
+				return true;
 			}
 		}
-		//*makes the vertical lines... this I'm not sure about*//
-		if (i % 3 != 0)
-		{
-			printf("\n\t\t");
-			printf("|\t\t\b|\t\t\b\b|\t\t\t\b\b\b\b|");
-			printf("\n\t\t");
-		}
-		else
-			printf("\n\t\t");
-		for (j = 0; j<9; j++)
-		{
-			if (j % 3 == 0)
-			{
-				if (a[i][j] == 0)
-				{
+	}
 
-					printf("|");
-					for (k = 0; k<4; k++)
-						printf(" ");
-				}
-				else
-				{
+	// verify the column is still valid
 
-					printf("| ", a[i][j]);
-					fixed = isfixed(icount, i, j);
+	for (int y = 0; y < 9; y++) {
+		bool check_one = (y != current_y);
+		bool check_two = (sudoku_board[y][current_x].getCurrentValue() == sudoku_board[current_y][current_x].getCurrentValue());
 
-					printf("%d  ", a[i][j]);
-				}
+		if (check_one) {
+			if (check_two) {
+				return true;
 			}
-			else
-			{
-				if (a[i][j] == 0)
-					for (k = 0; k<5; k++)
-						printf(" ");
-				else
-				{
-					fixed = isfixed(icount, i, j);
+		}
+	}
 
-					printf("  %d  ", a[i][j]);
+	// verify the box its in is still valid
+
+	int current_box_x = current_x / 3;
+	int current_box_y = current_y / 3;
+
+	for (int x = 3 * current_box_x; x < (3 * current_box_x + 3); x++) {
+		for (int y = 3 * current_box_y; y < (3 * current_box_y + 3); y++) {
+			bool check_one = (x != current_x) && (y != current_y);
+			bool check_two = (sudoku_board[y][x].getCurrentValue() == sudoku_board[current_y][current_x].getCurrentValue());
+
+			if (check_one) {
+				if (check_two) {
+					return true;
 				}
 			}
 		}
-		printf("\b|");
-	}end:
-	//*when finished*//
-	printf("\n\t\tPress Enter key to exit.");
-}
-
-
-int check_c(int m, int n)
-{
-	int x, y;
-	for (x = (m / 3) * 3; x<((m / 3) * 3 + 3); x++)
-		for (y = (n / 3) * 3; y<((n / 3) * 3 + 3); y++)
-		{
-			if (m != x && n != y)
-				if (a[m][n] == a[x][y])
-					return(0);
-		}
-	return(1);
-}
-
-
-int checkrow(int m, int n)
-{
-	int x;
-	for (x = 0; x<9; x++)
-	{
-		if (x != n)
-			if (a[m][n] == a[m][x])
-				return(0);
 	}
-	return(1);
+
+	return false;
+
 }
 
+int Board::generateBoard(int previous_x, int previous_y) {
 
-int checkcolumn(int m, int n)
-{
-	int x;
-	for (x = 0; x<9; x++)
-	{
-		if (x != m)
-			if (a[m][n] == a[x][n])
-				return(0);
+	int current_x, current_y;
+
+	// shifts to the "next" position on the Board
+	// gets ready to solve that recursively...
+	if (previous_x == 8 && previous_y == 8) {
+		return 0;
 	}
-	return(1);
+	else if (previous_x == 8) {
+		current_x = 0;
+		current_y = previous_y + 1;
+	}
+	else {
+		current_x = previous_x + 1;
+		current_y = previous_y;
+	}
+
+	printBoard();
+
+	Square& current_square = sudoku_board[current_y][current_x];
+
+	int attempt_value = current_square.getAvailableValue();
+	current_square.setCurrentValue(attempt_value);
+
+	while (attempt_value != -1) {
+
+		if (!Board::isInvalid(current_x, current_y)) {
+			if (generateBoard(current_x, current_y) == 0) {
+				return 0;
+			}
+		}
+
+		attempt_value = current_square.getAvailableValue();
+		current_square.setCurrentValue(attempt_value);
+
+	};
+
+	current_square.reset();
+	return -1;
+
 }
 
-//*Funtion that checks if numbers are consistent, using other check fns*//
-int check(int m, int n)
-{
-	int c;
-	c = check_c(m, n);
-	if (c == 1)
-		c = c*checkrow(m, n);
-	else
-		return(c);
-	if (c == 1)
-		c = c*checkcolumn(m, n);
-	else
-		return(c);
-	return(c);
-}
-
-//*This is the Sudoku solver function*//
-//*this was a bitch, man*//
-int solve()
-{
-	int m = 0, n = 0, number, c, fixed;
-
-A:
-
-	for (m = row; m<9; m++)
-	{
-		n = col;
-		while (n<9)
-		{
-			number = 1;
-			fixed = isfixed(icount, m, n);
-			if (fixed == 0)
-			{
-			allot:
-				a[m][n] = number;
-				c = check(m, n);
-				if (c == 0)
-				{
-					number++;
-					if (number>9)
-					{
-						a[m][n] = 0;
-						if (n == 0)
-						{
-							row = m - 1; col = 8;
-							if (row<0)
-								return(0);
-							goto B;
-						}
-						else
-						{
-							row = m; col = n - 1;
-							if (row<0 || col<0)
-								return(0);
-							goto B;
-						}
-					}
-					goto allot;
-				}
-			}
-			n++;
-			if (n>8)
-				col = 0;
+void Board::printBoard() {
+	printf("\n");
+	for (int x = 0; x < 9; x++) {
+		for (int y = 0; y < 9; y++) {
+			printf("%i ", play_board[y][x].getCurrentValue());
 		}
-	}
-	return(1);
-
-B:
-
-	fixed = isfixed(icount, row, col);
-	if (fixed == 0)
-	{
-		number = a[row][col];
-	allot1:
-		number++;
-		a[row][col] = number;
-		if (number>9)
-		{
-			a[row][col] = 0;
-			if (col == 0)
-			{
-				row--; col = 8;
-				if (row<0)
-					return(0);
-				goto B;
-			}
-			else
-			{
-				col--;
-				if (col<0)
-					return(0);
-				goto B;
-			}
-		}
-		c = check(row, col);
-		if (c == 0)
-			goto allot1;
-		else
-		{
-			if (col == 8)
-			{
-				row++;
-				if (row>8)
-					return(0);
-				col = 0;
-				goto A;
-			}
-			else
-			{
-				col++;
-				if (col>8)
-					return(0);
-				goto A;
-			}
-		}
-	}
-	else
-	{
-		if (col == 0)
-		{
-			row--; col = 8;
-			if (row<0)
-				return(0);
-			goto B;
-		}
-		else
-		{
-			col--;
-			if (col<0)
-				return(0);
-			goto B;
-		}
+		printf("\n");
 	}
 }
 
-int mode()
+
+Board::Board() {
+
+	generateBoard(-1, 0);
+	printBoard();
+
+}
+
+void displayRules() {
+	cout << "\n\n\t\t\tHOW TO PLAY\n" << endl;
+	cout << "\n\nSudoku is a game with a grid of 81 squares, divided into \n nine blocks with nine squares each." << endl;
+	cout << "\n\nEach of the nine squares must contain numbers 1 - 9" << endl;
+	cout << "\n\nEach number may only appear once in a column, row, or square." << endl;
+	cout << "\n\nGood luck!" << endl;
+	cout << "Enter any key to continue\n" << endl;
+}
+
+void loadMenu() {
+
+	int selection;
+	Board sudoku_board();
+
+	cout << "Select Your Option (enter number):\n" << endl;
+	cout << "\t1. Start\n" << endl;
+	cout << "\t2. Rules\n" << endl;
+
+	cin >> selection;
+
+	switch (selection) {
+	case 1:
+		cout << "hello world" << endl;
+		break;
+	case 2:
+		displayRules();
+		loadMenu();
+		break;
+	default:
+		cout << ("Stop that. Press '1' or '2'. There is no third option. Please stop.") << endl;
+		break;
+	}
+}
+
+
+
+
+/*int getCoordinates(bool isFixedValue[])
 {
+int coordinates = -1;
+char input[3];
+int values[2];
+
+cout << "What are the coordinates of the square: ";
+cin >> input;
+
+//Change format to grid[0] lowercase letter , grid[1] number
+(isalpha(input[0])) ? values[0] = tolower(input[0])
+: values[0] = tolower(input[1]);
+(isdigit(input[1])) ? values[1] = input[1]
+: values[1] = input[0];
+
+//Check for valid input(a-z)(1-9)
+if (values[0] < 'a' || values[0] > 'z' || values[1] < 49 || values[1] > 57)
+cout << "ERROR: Square '" << input << "' is invalid" << endl;
+
+//Check cell if read only
+else if (isFixedValue[(values[0] - 97) + (values[1] - 49) * 9])
+cout << "ERROR: Square '"
+<< (char)toupper(values[0])
+<< values[1] - 48
+<< "' is read-only" << endl;
+
+//Convert to coordinates(ex. (a2) = (97,50) = (10)
+else                 //Column      +        Row       * Column
+coordinates = ((values[0] - 97) + (values[1] - 49) * 9);
+return coordinates;
+}*/
+
+/*void editSquare(Board sudoku_board, int coordinates, int value)
+{
+//Update Board...
+sudoku_board[coordinates] = value;
+return;
+}*/
+
+void clearBoard(Board &sudoku_board)
+{
+	//
+	for (int i = 0; i < 81; i++)
+		if (!sudoku_board.isFixedValue[i])
+			sudoku_board.values[i] = 0;
+	return;
+}
+
+int hints() {
 	char ui_mode;
+	int h;
 	cout << "Choose a mode: B for Basic B or I for Insaenz" << endl;
 	cin >> ui_mode;
 
@@ -343,141 +364,30 @@ int mode()
 		cout << "You did not enter a correct mode!  Choose a mode: B for Basic B or I for Insaenz" << endl;
 		cin >> ui_mode;
 	}
-	if (ui_mode == 'b') h = 10000;
+	if (ui_mode == 'b') h = 80;
 	else if (ui_mode == 'i') h = 2;
 	return h;
 }
 
-//*This function does the actual creation bit of the sudoku*//
-void generate()
-{
-	int b[9][9];
-	int c, i, m, n;
-	int count = 1;
-	int fixed, error;
-	char choice;
-	rand();
-generate:
 
-	for (m = 0; m < 9; m++) {
-		for (n = 0; n < 9; n++) {
-			a[m][n] = 0;
-		}
+int main(int argv, char **argc) {
+	loadMenu();
+	Board sudoku;
+	char vorh;
+
+
+	int guess, h;
+	cout << "Wanna make a guess? Yes, press '1'" << endl;
+	cin >> guess;
+	switch (guess){
+		case'1':
+			cout << "'V' to enter value or 'H' to ask for a hint" << endl;
+			cin >> vorh;
+			vorh=tolower(vorh);
+			if (vorh == 'h') h=hints();
+			else
 	}
-
-	for (i = 0; i<60; i++) {
-		r[i][0] = 20; r[i][1] = 20;
-	}
-
-	//*Difficulty*//
-	cout << ("\n\n\n\n\t\tEnter your difficulty");
-	cout << ("\n\n\n\t\t1.'I literally don't know what a puzzle is'\n\n\t\t2.Easy\n\n\t\t3.Medium\n\n\t\t4.Hard\n\n\n\t\tENTER: ");
-	//*takes the user's input*//
-	scanf_s("%c", &choice);
-
-	switch (choice)
-	{
-		//*beginner mode*//
-	case '1': x = 32 + rand() % 5;
-		break;
-		//*easy mode*//
-	case '2': x = 28 + rand() % 5;
-		break;
-		//*medium mode*//
-	case '3': x = 24 + rand() % 3;
-		break;
-		//*hard mode*//
-	case '4': x = 19 + rand() % 3;
-		break;
-		//*if they enter something else, go up to 'generate'*//
-	default: getchar();
-		goto generate;
-	}
-
-	a[0][0] = 1 + rand() % 9; r[0][0] = 0; r[0][1] = 0;
-
-	//*iterating through, making random #s*//
-	for (count = 1; count<10; count++)
-	{
-	choose:
-		m = rand() % 10; n = rand() % 10;
-		fixed = isfixed(icount, m, n);
-		if (fixed == 1)
-			goto choose;
-		r[count][0] = m; r[count][1] = n;
-	allot:
-		a[m][n] = 1 + rand() % 10;
-		if (a[m][n] == 0)
-			goto allot;
-		c = check(m, n);
-		if (c == 0)
-			goto allot;
-	}
-
-	icount = count;
-	error = solve();
-
-	for (m = 0; m < 9; m++) {
-		for (n = 0; n < 9; n++) {
-			b[m][n] = a[m][n];
-		}
-	}
-
-	row = 0; col = 0;
-
-	for (i = 0; i<60; i++) {
-		r[i][0] = 20; r[i][1] = 20;
-	}
-
-	if (error == 0) {
-		goto generate;
-	}
-
-	for (count = 0; count<x / 2; count++) {
-	choose2:
-		m = rand() % 10; n = rand() % 6;
-		fixed = isfixed(count, m, n);
-		if (fixed == 1) {
-			goto choose2;
-		}
-		r[count][0] = m; r[count][1] = n;
-		r[count + x / 2][0] = 8 - m;
-		r[count + x / 2][1] = 8 - n;
-	}
-
-	for (m = 0; m < 9; m++) {
-		for (n = 0; n < 9; n++) {
-			fixed = isfixed(x, m, n);
-			if (fixed != 1) {
-				a[m][n] = 0;
-			}
-		}
-	}
-
-	icount = x;
-	display();
-	getchar();
-	cout << "\n\n\n\tEnter 's' to solve the puzzle or 'm' to generate another puzzle, 'u' to input values, and 'h' to get a hint: " << endl;
-	scanf_s("%c", &choice);
-
-	//*if they wish to solve, upper or lower case*//
-	if (choice == 's' || choice == 'S')
-	{
-		for (m = 0; m < 9; m++) {
-			for (n = 0; n < 9; n++) {
-				a[m][n] = b[m][n];
-			}
-		}
-		display();
-		getchar();
-	}
-	getchar();
 	system("pause");
-	if (choice == 'u' || choice == 'U'){
-		userinput();
-	}
-	//*otherwise make a new puzzle*//
-	if (choice == 'm' || choice == 'M')
-		goto generate;
-	exit(0);
+	return 0;
+
 }
