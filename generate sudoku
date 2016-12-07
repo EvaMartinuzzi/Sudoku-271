@@ -75,18 +75,16 @@ int isfixed(int count, int m, int n)
 }
 
 void userinput(int row, int col, int m){
+	int i, j;
 	cout << "Enter the row you would like: " << endl;
 	cin >> row;
 	cout << "Enter the column you would like: " << endl;
 	cin >> col;
 	cout << "What value would you like to enter?" << endl;
 	cin >> m;
-	if (a[row][col] = m){
-		cout << "Noice." << endl;
-	}
-	else{
-		cout << "That's super wrong. Try again!" << endl;
-	}
+	
+	a[row][col];
+
 }
 
 
@@ -334,7 +332,7 @@ B:
 
 int mode()
 {
-	char ui_mode, level;
+	char ui_mode;
 	cout << "Choose a mode: B for Basic B or I for Insaenz" << endl;
 	cin >> ui_mode;
 
