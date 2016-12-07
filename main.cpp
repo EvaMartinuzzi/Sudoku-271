@@ -11,7 +11,7 @@ using namespace std;
 //*just kinda left these out so I could use them throughout the code, not sure if most efficient though*//
 int **a = new int *[9];
 int r[60][2];
-int row, col, icount, m, u, x, n;
+int row, col, icount, m, u, x, n, z;
 char c;
 int h = 0;
 void display(void), generate();
@@ -20,7 +20,7 @@ int checkrow(int m, int n, int **a);
 int checkcolumn(int m, int n, int **a);
 int check(int m, int n);
 int isfixed(int icount, int m, int n);
-void userinput(int row, int col, int m, int **a);
+int userinput();
 int mode(int h);
 
 int main()
@@ -65,6 +65,32 @@ int isfixed(int count, int m, int n)
 }
 
 
+int userinput() {
+	row = row + 1;
+	col = col + 1;
+strt:
+	int r = 0; m = 0;
+	cout << "Enter the row you would like: " << endl;
+	scanf_s("%i", &row);
+	
+	cout << "Enter the column you would like: " << endl;
+	scanf_s("%i", &col);
+	
+	cout << "What value would you like to enter?" << endl;
+	scanf_s("%i", &z);
+	
+	//if (row >1 && row <10 && col>1 && col<10 && m >1 && m <10){
+		if (a[row][col] = z){
+			printf("Good work!");
+			return a[row][col];
+		}
+		else{
+			printf("Try Again!");
+			goto strt;
+		}
+}
+
+
 //*Function that prints the Sudoku board*//
 void display()
 {
@@ -88,7 +114,7 @@ void display()
 		if (i % 3 != 0)
 		{
 			printf("\n\t\t");
-			printf("|    |    |    |    |    |    |    |    |   |");
+			printf("|              |              |             |");
 			printf("\n\t\t");
 		}
 		else
@@ -401,11 +427,10 @@ generate:
 				a[m][n] = b[m][n];
 			}
 		}
-		userinput(row, col, m, a);
+		userinput();
 	}
 	//*otherwise make a new puzzle*//
 	if (choice == 'm' || choice == 'M')
-		getchar();
-		generate();
+		goto generate;
 	exit(0);
 }
