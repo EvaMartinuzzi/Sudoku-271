@@ -11,331 +11,390 @@
 using namespace std;
 
 class Square {
-
-	list<int> available_values;
-
-	int current_value;
-
+    
+    list<int> available_values;
+    
+    int current_value;
+    
 public:
-
-	Square();
-
-	void reset();
-
-	int getAvailableValue();
-
-	int getCurrentValue();
-	void setCurrentValue(int new_value);
-
+    
+    Square();
+    
+    void reset();
+    
+    int getAvailableValue();
+    
+    int getCurrentValue();
+    void setCurrentValue(int new_value);
+    
 };
 
 int Square::getAvailableValue(){
-
-	if (available_values.empty()){
-		return -1;
-	}
-
-	int return_val = available_values.front();
-	available_values.pop_front();
-
-	return return_val;
-
+    
+    if (available_values.empty()){
+        return -1;
+    }
+    
+    int return_val = available_values.front();
+    available_values.pop_front();
+    
+    return return_val;
+    
 }
 
 int Square::getCurrentValue(){
-	return current_value;
+    return current_value;
 }
 
 void Square::setCurrentValue(int new_value){
-	current_value = new_value;
+    current_value = new_value;
 }
 
 void Square::reset(){
-	setCurrentValue(-1);
-
-	// intializing the available values list
-	for (int x = 0; x < 9; x++){
-		available_values.push_front(x + 1);
-	}
-
-	for (int x = 0; x < 1000; x++){
-		int rand_one = rand() % 3;
-		if (rand_one < (rand() % 6)){
-			available_values.push_front(available_values.back());
-			available_values.pop_back();
-		}
-		else{
-			available_values.push_back(available_values.front());
-			available_values.pop_front();
-		}
-	}
-
+    setCurrentValue(-1);
+    
+    // intializing the available values list
+    for (int x = 0; x < 9; x++){
+        available_values.push_front(x + 1);
+    }
+    
+    for (int x = 0; x < 1000; x++){
+        int rand_one = rand() % 3;
+        if (rand_one < (rand() % 6)){
+            available_values.push_front(available_values.back());
+            available_values.pop_back();
+        }
+        else{
+            available_values.push_back(available_values.front());
+            available_values.pop_front();
+        }
+    }
+    
 }
 
+
+
 Square::Square(void){
-
-	reset();
-
+    
+    reset();
+    
 }
 
 class Board {
-
-	Square sudoku_board[9][9];
-
-	void printBoard();
-	void edit();
-
+    
+    Square sudoku_board[9][9];
+    Square starting_board[9][9];
+    Square play_board[9][9];
+    
+    void printBoard();
+    void edit();
+    
 public:
-
-	Board();
-
-	int coordinates;
-	bool isFixedValue[81];
-	int values[81];
-	int generateBoard(int, int);
-	bool isInvalid(int, int);
-
+    
+    Board();
+    
+    int coordinates;
+    bool isFixedValue[81];
+    int values[81];
+    int generateBoard(int, int);
+    bool isInvalid(int, int);
+    bool makeStartingBoard();
+    bool delete_randomtiles(int difficulty);
+    bool inputTile(int,int,int);
+    
 };
 
+bool Board::makeStartingBoard()
+{
+    for(int i=0; i<9; i++){
+        for (int j=0; j<9; j++){
+            starting_board[i][j].setCurrentValue(sudoku_board[i][j].getCurrentValue());
+            play_board[i][j].setCurrentValue(sudoku_board[i][j].getCurrentValue());
+        }
+        
+    }
+    return true;
+}
+
+bool Board::inputTile(int x, int y, int n)
+{
+    if(x>0 && x<10 && y>0 && y<10 && n>0 && n<10)
+    {
+        if(starting_board[x][y].getCurrentValue()!=0) {
+            return false;
+        }
+        else{
+            play_board[x][y].setCurrentValue(n);
+            return true;
+        }
+    }
+    else{
+        return false;
+    }
+
+}
+
+bool Board::delete_randomtiles(int difficulty)
+{
+    int nDelete;
+    int rx, ry;
+    if (difficulty == 1){
+        nDelete = 10;
+    }
+    else if (difficulty == 2) {
+        nDelete = 20;
+    }
+    else if (difficulty == 3) {
+        nDelete = 30;
+    }
+    for (int i = 0; i < nDelete; i++) {
+        rx = srand();
+        ry = srand();
+        starting_board[rx][ry].setCurrentValue(0);
+        play_board[rx][ry].setCurrentValue(0);
+    }
+    return true;
+}
 bool Board::isInvalid(int current_x, int current_y){
-
-	// verify the row is still valid
-
-	for (int x = 0; x < 9; x++){
-		bool check_one = (x != current_x);
-		bool check_two = (sudoku_board[current_y][x].getCurrentValue() == sudoku_board[current_y][current_x].getCurrentValue());
-
-		if (check_one){
-			if (check_two){
-				return true;
-			}
-		}
-	}
-
-	// verify the column is still valid
-
-	for (int y = 0; y < 9; y++){
-		bool check_one = (y != current_y);
-		bool check_two = (sudoku_board[y][current_x].getCurrentValue() == sudoku_board[current_y][current_x].getCurrentValue());
-
-		if (check_one){
-			if (check_two){
-				return true;
-			}
-		}
-	}
-
-	// verify the box its in is still valid
-
-	int current_box_x = current_x / 3;
-	int current_box_y = current_y / 3;
-
-	for (int x = 3 * current_box_x; x < (3 * current_box_x + 3); x++){
-		for (int y = 3 * current_box_y; y < (3 * current_box_y + 3); y++){
-			bool check_one = (x != current_x) && (y != current_y);
-			bool check_two = (sudoku_board[y][x].getCurrentValue() == sudoku_board[current_y][current_x].getCurrentValue());
-
-			if (check_one){
-				if (check_two){
-					return true;
-				}
-			}
-		}
-	}
-
-	return false;
-
+    
+    // verify the row is still valid
+    
+    for (int x = 0; x < 9; x++){
+        bool check_one = (x != current_x);
+        bool check_two = (sudoku_board[current_y][x].getCurrentValue() == sudoku_board[current_y][current_x].getCurrentValue());
+        
+        if (check_one){
+            if (check_two){
+                return true;
+            }
+        }
+    }
+    
+    // verify the column is still valid
+    
+    for (int y = 0; y < 9; y++){
+        bool check_one = (y != current_y);
+        bool check_two = (sudoku_board[y][current_x].getCurrentValue() == sudoku_board[current_y][current_x].getCurrentValue());
+        
+        if (check_one){
+            if (check_two){
+                return true;
+            }
+        }
+    }
+    
+    // verify the box its in is still valid
+    
+    int current_box_x = current_x / 3;
+    int current_box_y = current_y / 3;
+    
+    for (int x = 3 * current_box_x; x < (3 * current_box_x + 3); x++){
+        for (int y = 3 * current_box_y; y < (3 * current_box_y + 3); y++){
+            bool check_one = (x != current_x) && (y != current_y);
+            bool check_two = (sudoku_board[y][x].getCurrentValue() == sudoku_board[current_y][current_x].getCurrentValue());
+            
+            if (check_one){
+                if (check_two){
+                    return true;
+                }
+            }
+        }
+    }
+    
+    return false;
+    
 }
 
 int Board::generateBoard(int previous_x, int previous_y){
-
-	int current_x, current_y;
-
-	// shifts to the "next" position on the Board
-	// gets ready to solve that recursively...
-	if (previous_x == 8 && previous_y == 8){
-		return 0;
-	}
-	else if (previous_x == 8){
-		current_x = 0;
-		current_y = previous_y + 1;
-	}
-	else{
-		current_x = previous_x + 1;
-		current_y = previous_y;
-	}
-
-	printBoard();
-
-	Square& current_square = sudoku_board[current_y][current_x];
-
-	int attempt_value = current_square.getAvailableValue();
-	current_square.setCurrentValue(attempt_value);
-
-	while (attempt_value != -1){
-
-		if (!Board::isInvalid(current_x, current_y)){
-			if (generateBoard(current_x, current_y) == 0){
-				return 0;
-			}
-		}
-
-		attempt_value = current_square.getAvailableValue();
-		current_square.setCurrentValue(attempt_value);
-
-	};
-
-	current_square.reset();
-	return -1;
-
+    
+    int current_x, current_y;
+    
+    // shifts to the "next" position on the Board
+    // gets ready to solve that recursively...
+    if (previous_x == 8 && previous_y == 8){
+        return 0;
+    }
+    else if (previous_x == 8){
+        current_x = 0;
+        current_y = previous_y + 1;
+    }
+    else{
+        current_x = previous_x + 1;
+        current_y = previous_y;
+    }
+    
+    printBoard();
+    
+    Square& current_square = sudoku_board[current_y][current_x];
+    
+    int attempt_value = current_square.getAvailableValue();
+    current_square.setCurrentValue(attempt_value);
+    
+    while (attempt_value != -1){
+        
+        if (!Board::isInvalid(current_x, current_y)){
+            if (generateBoard(current_x, current_y) == 0){
+                return 0;
+            }
+        }
+        
+        attempt_value = current_square.getAvailableValue();
+        current_square.setCurrentValue(attempt_value);
+        
+    };
+    
+    current_square.reset();
+    return -1;
+    
 }
 
 void Board::printBoard(){
-	printf("\n");
-	for (int x = 0; x < 9; x++){
-		for (int y = 0; y < 9; y++){
-			printf("%i ", sudoku_board[y][x].getCurrentValue());
-		}
-		printf("\n");
-	}
+    printf("\n");
+    for (int x = 0; x < 9; x++){
+        for (int y = 0; y < 9; y++){
+            printf("%i ", play_board[y][x].getCurrentValue());
+        }
+        printf("\n");
+    }
 }
 
 
 Board::Board(){
-
-	generateBoard(-1, 0);
-	printBoard();
-
+    
+    generateBoard(-1, 0);
+    printBoard();
+    
 }
 
 void displayRules(){
-	cout << "\n\n\t\t\tHOW TO PLAY\n" << endl;
-	cout << "\n\nSudoku is a game with a grid of 81 squares, divided into \n nine blocks with nine squares each." << endl;
-	cout << "\n\nEach of the nine squares must contain numbers 1 - 9" << endl;
-	cout << "\n\nEach number may only appear once in a column, row, or square." << endl;
-	cout << "\n\nGood luck!" << endl;
-	cout << "Enter any key to continue\n" << endl;
+    cout << "\n\n\t\t\tHOW TO PLAY\n" << endl;
+    cout << "\n\nSudoku is a game with a grid of 81 squares, divided into \n nine blocks with nine squares each." << endl;
+    cout << "\n\nEach of the nine squares must contain numbers 1 - 9" << endl;
+    cout << "\n\nEach number may only appear once in a column, row, or square." << endl;
+    cout << "\n\nGood luck!" << endl;
+    cout << "Enter any key to continue\n" << endl;
 }
 
 void loadMenu(){
-
-	int selection;
-	Board sudoku_board();
-
-	cout << "Select Your Option (enter number):\n" << endl;
-	cout << "\t1. Start\n" << endl;
-	cout << "\t2. Rules\n" << endl;
-
-	cin >> selection;
-
-	switch (selection) {
-	case 1:
-		cout << "hello world" << endl;
-		break;
-	case 2:
-		displayRules();
-		loadMenu();
-		break;
-	default:
-		cout << ("Stop that. Press '1' or '2'. There is no third option. Please stop.") << endl;
-		break;
-	}
+    
+    int selection;
+    Board sudoku_board();
+    
+    cout << "Select Your Option (enter number):\n" << endl;
+    cout << "\t1. Start\n" << endl;
+    cout << "\t2. Rules\n" << endl;
+    
+    cin >> selection;
+    
+    switch (selection) {
+        case 1:
+            cout << "hello world" << endl;
+            break;
+        case 2:
+            displayRules();
+            loadMenu();
+            break;
+        default:
+            cout << ("Stop that. Press '1' or '2'. There is no third option. Please stop.") << endl;
+            break;
+    }
 }
 
 
-int getCoordinates(bool isFixedValue[])
-{
+
+
+/*int getCoordinates(bool isFixedValue[])
+ {
 	int coordinates = -1;
 	char input[3];
 	int values[2];
-
+ 
 	cout << "What are the coordinates of the square: ";
 	cin >> input;
-
+ 
 	//Change format to grid[0] lowercase letter , grid[1] number
 	(isalpha(input[0])) ? values[0] = tolower(input[0])
-		: values[0] = tolower(input[1]);
+ : values[0] = tolower(input[1]);
 	(isdigit(input[1])) ? values[1] = input[1]
-		: values[1] = input[0];
-
+ : values[1] = input[0];
+ 
 	//Check for valid input(a-z)(1-9)
 	if (values[0] < 'a' || values[0] > 'z' || values[1] < 49 || values[1] > 57)
-		cout << "ERROR: Square '" << input << "' is invalid" << endl;
-
+ cout << "ERROR: Square '" << input << "' is invalid" << endl;
+ 
 	//Check cell if read only
 	else if (isFixedValue[(values[0] - 97) + (values[1] - 49) * 9])
-		cout << "ERROR: Square '"
-		<< (char)toupper(values[0])
-		<< values[1] - 48
-		<< "' is read-only" << endl;
-
+ cout << "ERROR: Square '"
+ << (char)toupper(values[0])
+ << values[1] - 48
+ << "' is read-only" << endl;
+ 
 	//Convert to coordinates(ex. (a2) = (97,50) = (10)
 	else                 //Column      +        Row       * Column
-		coordinates = ((values[0] - 97) + (values[1] - 49) * 9);
+ coordinates = ((values[0] - 97) + (values[1] - 49) * 9);
 	return coordinates;
-}
+ }*/
 
-void editSquare(int sudoku_board[], int coordinates, int value)
-{
+/*void editSquare(Board sudoku_board, int coordinates, int value)
+ {
 	//Update Board...
-	Board sudoku_board;
 	sudoku_board[coordinates] = value;
 	return;
-}
+ }*/
 
 void clearBoard(Board &sudoku_board)
 {
-	//
-	for (int i = 0; i < 81; i++)
-		if (!sudoku_board.isFixedValue[i])
-			sudoku_board.values[i] = 0;
-	return;
+    //
+    for (int i = 0; i < 81; i++)
+        if (!sudoku_board.isFixedValue[i])
+            sudoku_board.values[i] = 0;
+    return;
 }
 
 
 int main(int argv, char **argc){
-
-	srand(time(NULL));
-	loadMenu();
-	Board sudoku;
-
-
-	/*template<typename T, int height, int width>
-	std::ostream& writemap(std::ostream& os, T(&sudoku)[height][width])
-	{
-		for (int i = 0; i < height; ++i)
-		{
-			for (int j = 0; j < width; ++j)
-			{
-				os << sudoku[i][j] << " ";
-			}
-			os << "\n";
-		}
-		return os;
-	}
-
-	const int width = 9;
-	const int height = 9;
-
-	sudoku[height][width];
-
-	std::fstream of("Save.txt", std::ios::out | std::ios::app);
-
-	if (of.is_open())
-	{
-		writemap(of, sudoku);
-		writemap(std::cout, sudoku);
-		of.close();
-	}
-	*/
-	int guess;
-	cout << "Wanna make a guess? Yes, press '1'" << endl;
-	cin >> guess;
-	switch (guess){
-	case'1':
-		editSquare();
-	}
-	system("pause");
-	return 0;
-
+    
+    srand(time(NULL));
+    loadMenu();
+    Board sudoku;
+    
+    
+    /*template<typename T, int height, int width>
+     std::ostream& writemap(std::ostream& os, T(&sudoku)[height][width])
+     {
+     for (int i = 0; i < height; ++i)
+     {
+     for (int j = 0; j < width; ++j)
+     {
+     os << sudoku[i][j] << " ";
+     }
+     os << "\n";
+     }
+     return os;
+     }
+     
+     const int width = 9;
+     const int height = 9;
+     
+     sudoku[height][width];
+     
+     std::fstream of("Save.txt", std::ios::out | std::ios::app);
+     
+     if (of.is_open())
+     {
+     writemap(of, sudoku);
+     writemap(std::cout, sudoku);
+     of.close();
+     }
+     */
+    int guess;
+    cout << "Wanna make a guess? Yes, press '1'" << endl;
+    cin >> guess;
+    /*switch (guess){
+     case'1':
+     editSquare(sudoku,1,1);
+     }*/
+    system("pause");
+    return 0;
+    
 }
