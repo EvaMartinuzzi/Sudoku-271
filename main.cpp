@@ -33,7 +33,7 @@ menu:
 	cin >> c;
 
 	if (c == '1') {
-		cout << "hello" << endl;
+		getchar();
 		generate();
 		h = mode(h);
 	}
@@ -101,7 +101,7 @@ void display()
 		if (i % 3 != 0)
 		{
 			printf("\n\t\t");
-			printf("|\t\t\b|\t\t\b\b|\t\t\t\b\b\b\b|");
+			printf("|\t\t\b\t\t\b\b   |\t\b\b\b\b\t\t\t    |");
 			printf("\n\t\t");
 		}
 		else
