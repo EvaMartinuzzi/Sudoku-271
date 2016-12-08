@@ -8,6 +8,7 @@
 #include "Square.h"
 #include <list>
 #include <fstream>
+#include <vector>
 
 using namespace std;
 
@@ -25,13 +26,34 @@ int main(int argv, char **argc) {
 	int board[9][9];
 
 	srand((unsigned)time(NULL));
-
-	for (int i = 0; i<9; i++)
+	int rando = 0;
+	vector<int> row_holder;
+	vector<int> col_holder;
+	int k;
+	for (int i = 0; i < 9; i++)
 	{
-		for (int j = 0; j<9; j++)
+
+		for (int j = 0; j < 9; j++)
 		{
-			board[i][j] = rand() % 9 +1;
+			rando = rand() % 9 + 1;
+			k = row_holder.size() - 1;
+			cout << "Outer loop " << rando << " k size" << k << endl;
+			while (k >= 0) {
+				if (row_holder[k] == rando) {
+					rando = rand() % 9 + 1;
+					k = row_holder.size() - 1;
+					cout << "If new rando " << rando << " k size" << k << endl;
+				}
+				else {
+					k--;
+				}
+			}
+			cout << "Added to board: " << rando << endl;
+			row_holder.push_back(rando);
+			board[i][j] = rando;
 		}
+		row_holder.clear();
+
 	}
 
 	for (int i = 0; i<9; i++)    //This loops on the rows.
@@ -46,6 +68,9 @@ int main(int argv, char **argc) {
 	int diff;
 	cin >> diff;
 	sudoku.delete_randomtiles(diff);
+
+
+
 
 	system("pause");
 	return 0;
