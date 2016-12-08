@@ -5,10 +5,76 @@
 #include <cstring>
 #include <iostream>
 #include <list>
-#include "Square.h"
 
 using namespace std;
 
+class Square {
+
+	list<int> available_values;
+
+	int current_value;
+
+public:
+
+	Square();
+
+	void reset();
+
+	int getAvailableValue();
+
+	int getCurrentValue();
+	void setCurrentValue(int new_value);
+
+};
+
+int Square::getAvailableValue(){
+
+	if (available_values.empty()){
+		return -1;
+	}
+
+	int return_val = available_values.front();
+	available_values.pop_front();
+
+	return return_val;
+
+}
+
+int Square::getCurrentValue(){
+	return current_value;
+}
+
+void Square::setCurrentValue(int new_value){
+	current_value = new_value;
+}
+
+void Square::reset(){
+	setCurrentValue(-1);
+
+	// intializing the available values list
+	for (int x = 0; x < 9; x++){
+		available_values.push_front(x + 1);
+	}
+
+	for (int x = 0; x < 1000; x++){
+		int rand_one = rand() % 3;
+		if (rand_one < (rand() % 6)){
+			available_values.push_front(available_values.back());
+			available_values.pop_back();
+		}
+		else{
+			available_values.push_back(available_values.front());
+			available_values.pop_front();
+		}
+	}
+
+}
+
+Square::Square(void){
+
+	reset();
+
+}
 
 class Board {
 
@@ -22,51 +88,8 @@ public:
 
 	int generateBoard(int, int);
 	bool isInvalid(int, int);
-	bool delete_randomtiles(int);
 
 };
-
-bool Board::delete_randomtiles(int difficulty)
-{
-	int nDelete;
-	int rx, ry;
-
-	if (difficulty == 1) {
-		nDelete = 10;
-	}
-	else if (difficulty == 2) {
-		nDelete = 20;
-	}
-	else if (difficulty == 3) {
-		nDelete = 30;
-		sudoku_board[0][3].setCurrentValue(0);
-		sudoku_board[3][7].setCurrentValue(0);
-		sudoku_board[0][0].setCurrentValue(0);
-		sudoku_board[5][5].setCurrentValue(0);
-		sudoku_board[1][6].setCurrentValue(0);
-		sudoku_board[2][5].setCurrentValue(0);
-		sudoku_board[1][2].setCurrentValue(0);
-		sudoku_board[2][4].setCurrentValue(0);
-		sudoku_board[1][8].setCurrentValue(0);
-		sudoku_board[8][8].setCurrentValue(0);
-		sudoku_board[4][6].setCurrentValue(0);
-		sudoku_board[6][3].setCurrentValue(0);
-		sudoku_board[8][1].setCurrentValue(0);
-		sudoku_board[3][6].setCurrentValue(0);
-	}
-	/*for (int i = 0; i < nDelete; i++) {
-		srand(time(NULL));
-		rx = rand()%9;
-		srand(time(NULL));
-		ry = rand()%9;
-		sudoku_board[rx][ry].getCurrentValue();
-		sudoku_board[rx][ry].setCurrentValue(0);
-	*/
-	printBoard();
-	return true;
-}
-
-
 
 bool Board::isInvalid(int current_x, int current_y){
 
@@ -175,5 +198,48 @@ Board::Board(){
 
 	generateBoard(-1, 0);
 	printBoard();
+
+}
+
+void displayRules(){
+	cout << "\n\n\t\t\tHOW TO PLAY\n" << endl;
+	cout << "\n\nSudoku is a game with a grid of 81 squares, divided into \n nine blocks with nine squares each." << endl;
+	cout << "\n\nEach of the nine squares must contain numbers 1 - 9" << endl;
+	cout << "\n\nEach number may only appear once in a column, row, or square." << endl;
+	cout << "\n\nGood luck!" << endl;
+	cout << "Enter any key to continue\n" << endl;
+}
+
+void loadMenu(){
+
+	int selection;
+	Board sudoku_board();
+
+	cout << "Select Your Option (enter number):\n" << endl;
+	cout << "\t1. Start\n" << endl;
+	cout << "\t2. Rules\n" << endl;
+
+	cin >> selection;
+
+	switch (selection) {
+	case 1:
+		cout << "hello world" << endl;
+		break;
+	case 2:
+		displayRules();
+		loadMenu();
+		break;
+	default:
+		cout << ("Stop that. Press '1' or '2'. There is no third option. Please stop.") << endl;
+		break;
+	}
+}
+
+int main(int argv, char **argc){
+
+	srand(time(NULL));
+	Board sudoku;
+	system("pause");
+	return 0;
 
 }
