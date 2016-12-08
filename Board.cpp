@@ -9,6 +9,7 @@
 
 using namespace std;
 
+//*7-Dec-16, 11:36pm, SBlack*//
 
 class Board {
 
@@ -23,7 +24,9 @@ public:
 	int generateBoard(int, int);
 	bool isInvalid(int, int);
 	bool delete_randomtiles(int);
+	void input(int);
 	bool Board::user_interface();
+	bool Board::checker();
 };
 
 bool Board::delete_randomtiles(int difficulty)
@@ -43,6 +46,8 @@ bool Board::delete_randomtiles(int difficulty)
 		sudoku_board[2][4].setCurrentValue(0);
 		sudoku_board[1][8].setCurrentValue(0);
 		sudoku_board[8][8].setCurrentValue(0);
+		sudoku_board[8][7].setCurrentValue(0);
+
 
 	}
 	else if (difficulty == 2) {
@@ -64,6 +69,7 @@ bool Board::delete_randomtiles(int difficulty)
 		sudoku_board[6][4].setCurrentValue(0);
 		sudoku_board[7][3].setCurrentValue(0);
 		sudoku_board[2][4].setCurrentValue(0);
+		sudoku_board[8][7].setCurrentValue(0);
 		sudoku_board[1][8].setCurrentValue(0);
 		sudoku_board[8][8].setCurrentValue(0);
 		sudoku_board[4][6].setCurrentValue(0);
@@ -98,6 +104,7 @@ bool Board::delete_randomtiles(int difficulty)
 		sudoku_board[6][3].setCurrentValue(0);
 		sudoku_board[8][1].setCurrentValue(0);
 		sudoku_board[3][6].setCurrentValue(0);
+		sudoku_board[8][7].setCurrentValue(0);
 	}
 	/*for (int i = 0; i < nDelete; i++) {
 		srand(time(NULL));
@@ -113,10 +120,42 @@ bool Board::delete_randomtiles(int difficulty)
 
 bool Board::user_interface(){
 	int x, y, n, q;
-	while (user_interface){}
-	cout << "Type '1' to input a value or '2' to quit!" << endl;
-	cin >> q;
-	if(q == '1'){
+	while (true){
+		cout << "Type '1' to input a value or '2' to quit! If you're done, type '3'" << endl;
+		cin >> q;
+		if (q == 1){
+			cout << "Enter the row you would like to enter your value in" << endl;
+			cin >> x;
+			cout << "Enter the column you would like to enter a value in" << endl;
+			cin >> y;
+			cout << "Enter a value" << endl;
+			cin >> n;
+
+			sudoku_board[x][y].setCurrentValue(n);
+			printBoard();
+		}
+		else if (q == 2){
+			return false;
+		}
+		else if (q == 3){
+			if (!&Board::isInvalid){
+				cout << "Good work!" << endl;
+			}
+			else{
+				cout << "Dang, not right.." << endl;
+			}
+		}
+		else{
+			cout << "Input a REAL option." << endl;
+		}
+
+	}
+}
+
+
+/*void Board::input(int q){
+	int x, y, n;
+	if (q == '1'){
 		cout << "Enter the row you would like to enter your value in" << endl;
 		cin >> x;
 		cout << "Enter the column you would like to enter a value in" << endl;
@@ -126,18 +165,12 @@ bool Board::user_interface(){
 
 		sudoku_board[x][y].setCurrentValue(n);
 		printBoard();
-		return true;
 	}
 	else if (q == '2'){
-		return false;
+		input(q);
 	}
 
-}
-
-bool Board::check_solved(){
-
-}
-
+}*/
 
 
 bool Board::isInvalid(int current_x, int current_y){

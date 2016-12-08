@@ -25,5 +25,7 @@ public:
 	bool delete_randomtiles(int);
 	bool Board::user_interface();
 	bool Board::check_solved();
+	void input(int);
+	bool Board::checker();
 };
 #endif /* Board_h */

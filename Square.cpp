@@ -27,6 +27,7 @@ public:
 
 };
 
+
 int Square::getAvailableValue(){
 
 	if (available_values.empty()){

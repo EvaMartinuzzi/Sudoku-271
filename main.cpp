@@ -18,16 +18,19 @@ int main(int argv, char **argc){
 	srand(time(NULL));
 	loadMenu();
 	Board sudoku;
-	system("pause");
 
-	int d;
+	int d, q;
 	cout << "\n\nHey yo, what how hardcore are you? \n'1' if you're a pansy, \n'2' if you like a challenge, or \n'3' if you've got a death wish"<<endl;
 	cin >> d;
 	sudoku.delete_randomtiles(d);
 
 	sudoku.user_interface();
 
-	system("pause");
+	/*cout << "\n\nType '1' to input a value or '2' to quit!" << endl;
+	cin >> q;
+
+	sudoku.input(q);*/
+
 	return 0;
 
 }
