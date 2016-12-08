@@ -18,21 +18,15 @@ void user_interface(Board &sudoku);
 void clearBoard(Board &sudoku);
 
 int main(int argv, char **argc) {
-    
-    Board sudoku;
+
+	Board sudoku;
     loadMenu(sudoku);
-    
-    /*user_interface();
-    loadMenu();
-    Board sudoku;
-    int guess;
-    cout << "Wanna make a guess? Yes, press '1'" << endl;
-    cin >> guess;
-    
-    /*switch (guess){
-     case'1':
-     editSquare(sudoku,1,1);
-     }*/
+
+	cout << "What difficulty would you like to play? '1' for easy, '2' for medium, '3' for hard " << endl;
+	int diff;
+	cin >> diff;
+	sudoku.delete_randomtiles(diff);
+
     system("pause");
     return 0;
 }
@@ -97,4 +91,3 @@ void loadMenu(Board &sudoku) {
             break;
     }
 }
-
