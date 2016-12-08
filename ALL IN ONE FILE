@@ -101,6 +101,7 @@ public:
 	bool makeStartingBoard();
 	bool delete_randomtiles(int difficulty);
 	bool inputTile(int, int, int);
+	void user_interface(int, int, int);
 
 };
 
@@ -149,9 +150,9 @@ bool Board::delete_randomtiles(int difficulty)
 	}
 	for (int i = 0; i < nDelete; i++) {
 		srand(time(NULL));
-		rx= rand() % 81 + 1;
+		rx = rand() % 81 + 1;
 		srand(time(NULL));
-		ry= rand() % 81 + 1;
+		ry = rand() % 81 + 1;
 		starting_board[rx][ry].setCurrentValue(0);
 		play_board[rx][ry].setCurrentValue(0);
 	}
@@ -254,7 +255,7 @@ void Board::printBoard() {
 	printf("\n");
 	for (int x = 0; x < 9; x++) {
 		for (int y = 0; y < 9; y++) {
-			printf("%i ", play_board[y][x].getCurrentValue());
+			printf("%i ", sudoku_board[x][y].getCurrentValue());
 		}
 		printf("\n");
 	}
@@ -302,6 +303,15 @@ void loadMenu() {
 	}
 }
 
+void user_interface(int x, int y, int n){
+
+	cout << "Enter row:" << endl;
+	cin >> x;
+	cout << "Enter column:" << endl;
+	cin >> y;
+	cout << "Enter a value:" << endl;
+	cin >> n;
+}
 
 
 
@@ -374,33 +384,33 @@ int main(int argv, char **argc) {
 	loadMenu();
 	Board sudoku;
 	char vorh;
+	int x, y, n;
+
+	/*user_interface(x, y, n);
+	sudoku.user_interface(x, y, n);*/
+
 
 	int h = hints();
 	int guess;
-	cout << "Wanna make a guess? Yes, press '1', '0' to exit" << endl;
+	cout << "Wanna make a guess? Yes, press '1'" << endl;
 	cin >> guess;
-	while (guess!=0){
-		switch (guess) {
-			case 1:
-				cout << "'V' to enter value or 'H' to ask for a hint" << endl;
-				cin >> vorh;
-				vorh = tolower(vorh);
-				if (vorh == 'h') {
-					cout << "You have " << h << " hints left" << endl;
-					if (h == 0) {
-						cout << "No more hints!" << endl;
-					}
-					else {
-						cout << "Heres your hint: " << endl;
-						h--;
-					}
-				}
+	switch (guess){
+	case 1:
+		cout << "'V' to enter value or 'H' to ask for a hint" << endl;
+		cin >> vorh;
+		vorh = tolower(vorh);
+		if (vorh == 'h') {
+			cout << "You have " << h << " hints left" << endl;
+			if (h == 0) {
+				cout << "No more hints!" << endl;
 				break;
 			}
-			cout << "Wanna make a guess? Yes, press '1', '0' to exit" << endl;
-			cin >> guess;
+			else {
+				cout << "Heres your hint: " << endl;
+				h--;
+			}
 		}
-
+	}
 	system("pause");
 	return 0;
 
