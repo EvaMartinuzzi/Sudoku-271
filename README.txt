@@ -16,9 +16,9 @@ Have the latest version of Xcode or Visual Studio installed on your machine
 
 Running the Code
 ================
-Once copied into the correct folders in your IDE, you should be able to successfully build and run the code.
+Once downloaded into the correct folders in your IDE, run main.cpp
 There are no tests to run.
-The Sudoku game should appear in the terminal or within the IDE itsself, and you should be able to play along.
+Enter in options
 
 Authors
 =======
