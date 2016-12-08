@@ -48,6 +48,7 @@ bool Board::delete_randomtiles(int difficulty)
 {
     int nDelete;
     int rx, ry;
+	
     if (difficulty == 1) {
         nDelete = 10;
     }
@@ -65,7 +66,8 @@ bool Board::delete_randomtiles(int difficulty)
         starting_board[rx][ry].setCurrentValue(0);
         play_board[rx][ry].setCurrentValue(0);
     }
-    return true;
+	printBoard();
+	return true;
 }
 bool Board::isInvalid(int current_x, int current_y) {
     
