@@ -16,10 +16,16 @@ void loadMenu();
 int main(int argv, char **argc){
 
 	srand(time(NULL));
+	loadMenu();
 	Board sudoku;
 	system("pause");
 
-	sudoku.delete_randomtiles(3);
+	int d;
+	cout << "\n\nHey yo, what how hardcore are you? \n'1' if you're a pansy, \n'2' if you like a challenge, or \n'3' if you've got a death wish"<<endl;
+	cin >> d;
+	sudoku.delete_randomtiles(d);
+
+	sudoku.user_interface();
 
 	system("pause");
 	return 0;
@@ -31,6 +37,7 @@ void displayRules(){
 	cout << "\n\n\t\t\tHOW TO PLAY\n" << endl;
 	cout << "\n\nSudoku is a game with a grid of 81 squares, divided into \n nine blocks with nine squares each." << endl;
 	cout << "\n\nEach of the nine squares must contain numbers 1 - 9" << endl;
+	cout << "\n\nIf you see a '0', it means the space is open!" << endl;
 	cout << "\n\nEach number may only appear once in a column, row, or square." << endl;
 	cout << "\n\nGood luck!" << endl;
 	cout << "Enter any key to continue\n" << endl;
@@ -49,7 +56,6 @@ void loadMenu(){
 
 	switch (selection) {
 	case 1:
-		cout << "hello world" << endl;
 		break;
 	case 2:
 		displayRules();

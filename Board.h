@@ -23,6 +23,7 @@ public:
 	int generateBoard(int, int);
 	bool isInvalid(int, int);
 	bool delete_randomtiles(int);
-
+	bool Board::user_interface();
+	bool Board::check_solved();
 };
 #endif /* Board_h */

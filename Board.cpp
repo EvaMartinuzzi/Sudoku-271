@@ -23,7 +23,7 @@ public:
 	int generateBoard(int, int);
 	bool isInvalid(int, int);
 	bool delete_randomtiles(int);
-
+	bool Board::user_interface();
 };
 
 bool Board::delete_randomtiles(int difficulty)
@@ -33,9 +33,40 @@ bool Board::delete_randomtiles(int difficulty)
 
 	if (difficulty == 1) {
 		nDelete = 10;
+		sudoku_board[0][3].setCurrentValue(0);
+		sudoku_board[3][7].setCurrentValue(0);
+		sudoku_board[0][0].setCurrentValue(0);
+		sudoku_board[5][5].setCurrentValue(0);
+		sudoku_board[1][6].setCurrentValue(0);
+		sudoku_board[2][5].setCurrentValue(0);
+		sudoku_board[1][2].setCurrentValue(0);
+		sudoku_board[2][4].setCurrentValue(0);
+		sudoku_board[1][8].setCurrentValue(0);
+		sudoku_board[8][8].setCurrentValue(0);
+
 	}
 	else if (difficulty == 2) {
 		nDelete = 20;
+		sudoku_board[0][3].setCurrentValue(0);
+		sudoku_board[3][7].setCurrentValue(0);
+		sudoku_board[0][0].setCurrentValue(0);
+		sudoku_board[5][5].setCurrentValue(0);
+		sudoku_board[1][6].setCurrentValue(0);
+		sudoku_board[2][5].setCurrentValue(0);
+		sudoku_board[1][2].setCurrentValue(0);
+		sudoku_board[2][4].setCurrentValue(0);
+		sudoku_board[1][8].setCurrentValue(0);
+		sudoku_board[8][8].setCurrentValue(0);
+		sudoku_board[4][6].setCurrentValue(0);
+		sudoku_board[6][3].setCurrentValue(0);
+		sudoku_board[8][1].setCurrentValue(0);
+		sudoku_board[3][6].setCurrentValue(0);
+		sudoku_board[6][4].setCurrentValue(0);
+		sudoku_board[7][3].setCurrentValue(0);
+		sudoku_board[2][4].setCurrentValue(0);
+		sudoku_board[1][8].setCurrentValue(0);
+		sudoku_board[8][8].setCurrentValue(0);
+		sudoku_board[4][6].setCurrentValue(0);
 	}
 	else if (difficulty == 3) {
 		nDelete = 30;
@@ -46,6 +77,20 @@ bool Board::delete_randomtiles(int difficulty)
 		sudoku_board[1][6].setCurrentValue(0);
 		sudoku_board[2][5].setCurrentValue(0);
 		sudoku_board[1][2].setCurrentValue(0);
+		sudoku_board[2][4].setCurrentValue(0);
+		sudoku_board[1][8].setCurrentValue(0);
+		sudoku_board[8][8].setCurrentValue(0);
+		sudoku_board[4][6].setCurrentValue(0);
+		sudoku_board[6][3].setCurrentValue(0);
+		sudoku_board[8][1].setCurrentValue(0);
+		sudoku_board[3][6].setCurrentValue(0);
+		sudoku_board[1][7].setCurrentValue(0);
+		sudoku_board[2][7].setCurrentValue(0);
+		sudoku_board[3][8].setCurrentValue(0);
+		sudoku_board[4][4].setCurrentValue(0);
+		sudoku_board[5][2].setCurrentValue(0);
+		sudoku_board[6][4].setCurrentValue(0);
+		sudoku_board[7][3].setCurrentValue(0);
 		sudoku_board[2][4].setCurrentValue(0);
 		sudoku_board[1][8].setCurrentValue(0);
 		sudoku_board[8][8].setCurrentValue(0);
@@ -64,6 +109,33 @@ bool Board::delete_randomtiles(int difficulty)
 	*/
 	printBoard();
 	return true;
+}
+
+bool Board::user_interface(){
+	int x, y, n, q;
+	while (user_interface){}
+	cout << "Type '1' to input a value or '2' to quit!" << endl;
+	cin >> q;
+	if(q == '1'){
+		cout << "Enter the row you would like to enter your value in" << endl;
+		cin >> x;
+		cout << "Enter the column you would like to enter a value in" << endl;
+		cin >> y;
+		cout << "Enter a value" << endl;
+		cin >> n;
+
+		sudoku_board[x][y].setCurrentValue(n);
+		printBoard();
+		return true;
+	}
+	else if (q == '2'){
+		return false;
+	}
+
+}
+
+bool Board::check_solved(){
+
 }
 
 
